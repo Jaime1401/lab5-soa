@@ -25,6 +25,7 @@ const val COUNT_ROUTE = "direct:extractor"
 const val LOG_ROUTE = "direct:log"
 const val INDEX_VIEW = "index"
 const val MAX_DEFAULT = 5
+const val COUNT_HEADER_LENGTH = 4
 
 @Controller
 class SearchController(private val producerTemplate: ProducerTemplate) {
@@ -50,7 +51,7 @@ class Router(meterRegistry: MeterRegistry) : RouteBuilder() {
                 exchange.getIn().setHeader("keywords", remind.joinToString(" "))
                 exchange.getIn().setHeader("count", MAX_DEFAULT)
                 max.firstOrNull()
-                    ?.drop(4)
+                    ?.drop(COUNT_HEADER_LENGTH)
                     ?.toIntOrNull()
                     ?.let { count ->
                         exchange.getIn().setHeader("count", count)
